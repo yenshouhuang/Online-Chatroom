@@ -123,7 +123,7 @@ class TCPThreadedServer():
                 t.start()
 
         except KeyboardInterrupt:
-            print(f"\r[INFO] Server shut down manually")
+            print("\r[INFO] Server shut down manually")
             
 
 

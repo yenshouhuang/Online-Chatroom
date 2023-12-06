@@ -196,7 +196,7 @@ class TCPThreadedClient():
                 print("\r> ", end="")
         except Exception as e:
             if self.lastInput != "EX":
-                print(f"[ERROR] Error occured in recvHandler: ", e)
+                print("[ERROR] Error occured in recvHandler: ", e)
             self.recvSocket.close()
 
 
