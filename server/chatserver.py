@@ -37,9 +37,8 @@ def sendDataStream(conn: socket.socket, data: Union[str, bytes]):
 
     conn.sendall(size_segment)
 
-    res = recvAck(conn)
 
-    if res != 1:
+    if (res := recvAck(conn)) != 1:
         print("[ERROR] receiver did not recive correct size segment")
         return
 
@@ -157,9 +156,8 @@ class TCPThreadedServer():
             self.clientPubkey[curUser] = recvDataStream(client)
 
             while True:
-                op = recvDataStream(client).decode()
                 
-                if op == "EX":
+                if (op := recvDataStream(client).decode()) == "EX":
                     client.close()
                     clientRecv.close()
                     self.activeUsrDi.pop(curUser)

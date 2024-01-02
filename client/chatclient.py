@@ -36,9 +36,8 @@ def sendDataStream(conn: socket.socket, data: Union[str, bytes]):
 
     conn.sendall(size_segment)
 
-    res = recvAck(conn)
 
-    if res != 1:
+    if (res := recvAck(conn)) != 1:
         print("[ERROR] receiver did not recive correct size segment")
         return
 
@@ -115,13 +114,11 @@ class TCPThreadedClient():
         try:
             serverPubkey = recvDataStream(self.mSocket)
             sendDataStream(self.mSocket, args.username)
-            usrAck = recvAck(self.mSocket)
-            if usrAck != 1:
+            if (usrAck := recvAck(self.mSocket)) != 1:
                 while True:
                     password = input("Enter user's password: ").strip()
                     sendDataStream(self.mSocket, encrypt(password.encode(), serverPubkey))
-                    pwAck = recvAck(self.mSocket)
-                    if pwAck == 1: break
+                    if (pwAck := recvAck(self.mSocket)) == 1: break
             else:
                 password = input("Enter password: ")
                 sendDataStream(self.mSocket, encrypt(password.encode(), serverPubkey))
@@ -185,8 +182,7 @@ class TCPThreadedClient():
     def recvHandler(self):
         try:
             while True:
-                msgType = recvAck(self.recvSocket)
-                if msgType == 5:
+                if (msgType := recvAck(self.recvSocket)) == 5:
                     msg = recvDataStream(self.recvSocket).decode()
                 elif msgType == 4:
                     encrpyted_msg = recvDataStream(self.recvSocket)
